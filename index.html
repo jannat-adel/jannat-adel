@@ -1,604 +1,591 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jannat Adel | Data Engineer Portfolio</title>
-  <!-- Google Fonts & Lucide Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jannat Adel — Data Engineer Portfolio</title>
+<style>
+:root{
+  --bg:#071018;
+  --panel:#0d1a26;
+  --panel2:#102333;
+  --text:#eaf5ff;
+  --muted:#91a8ba;
+  --line:#1e4058;
+  --cyan:#27d9ff;
+  --blue:#4588ff;
+  --silver:#cbd8e4;
+  --shadow:0 20px 70px #0008;
+}
 
-  <style>
-    /* ==========================================
-       1. Variables & Global Styles
-       ========================================== */
-    :root {
-      --bg-dark: #030014;
-      --card-bg: rgba(15, 23, 42, 0.65);
-      --primary-purple: #8b5cf6;
-      --light-purple: #a78bfa;
-      --neon-cyan: #00e5ff;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-glow: rgba(139, 92, 246, 0.25);
-    }
+[data-theme="light"] {
+  --bg:#f0f6fc;
+  --panel:#ffffff;
+  --panel2:#e2edfd;
+  --text:#0f172a;
+  --muted:#475569;
+  --line:#cbd5e1;
+  --cyan:#0284c7;
+  --blue:#2563eb;
+  --silver:#334155;
+  --shadow:0 20px 40px #0002;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
+*{box-sizing:border-box;scroll-behavior:smooth}
 
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-      position: relative;
-    }
+body{
+  margin:0;
+  background:radial-gradient(circle at 80% 0%,#12385b 0,transparent 32%),var(--bg);
+  color:var(--text);
+  font:16px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;
+  overflow-x:hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
 
-    /* Background Interactive Canvas */
-    #canvas-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      pointer-events: none;
-    }
+#canvas-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
 
-    /* ==========================================
-       2. Navbar
-       ========================================== */
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 8%;
-      background: rgba(3, 0, 20, 0.75);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:auto;padding:0 24px;position:relative;z-index:1}
 
-    .logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1.4rem;
-      color: var(--text-main);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+.nav{
+  position:sticky;
+  top:16px;
+  z-index:10;
+  margin:16px auto 0;
+  background:#091520dd;
+  backdrop-filter:blur(18px);
+  border:1px solid #2a536d;
+  border-radius:999px;
+  padding:10px 18px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  transition: all 0.3s ease;
+}
 
-    .logo span {
-      color: var(--neon-cyan);
-    }
+.brand{font-weight:900;letter-spacing:.1em;color:var(--cyan);display:flex;align-items:center;gap:10px}
+.brandmark{
+  width:36px;
+  height:36px;
+  border:1px solid var(--cyan);
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  box-shadow:0 0 24px #27d9ff55;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.brandmark:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 0 35px #27d9ffaa; }
 
-    .nav-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-      align-items: center;
-    }
+.links{display:flex;gap:16px;flex:1;justify-content:center;flex-wrap:wrap}
+.links a{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;transition:all 0.2s ease;}
+.links a:hover{color:var(--cyan); text-shadow: 0 0 10px rgba(39,217,255,0.6);}
 
-    .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
+button{
+  border:1px solid var(--line);
+  background:var(--panel2);
+  color:var(--text);
+  border-radius:999px;
+  padding:8px 14px;
+  cursor:pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+button:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 15px rgba(39, 217, 255, 0.3);
+  transform: translateY(-2px);
+}
 
-    .nav-links a:hover {
-      color: var(--neon-cyan);
-      text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
-    }
+.hero{min-height:86vh;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:64px;padding:90px 0 70px}
+.eyebrow{color:var(--cyan);letter-spacing:.18em;text-transform:uppercase;font-size:12px}
+.hero h1{font-size:clamp(48px,8vw,88px);line-height:.96;margin:18px 0}
+.hero h1 span{color:var(--cyan)}
+.lead{font-size:19px;color:var(--muted);max-width:650px;line-height:1.7}
 
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
+.pillrow{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}
+.pill{
+  border:1px solid #2a536d;
+  border-radius:999px;
+  padding:7px 14px;
+  color:var(--silver);
+  font-size:13px;
+  transition: all 0.3s ease;
+  background: rgba(16, 35, 51, 0.5);
+}
+.pill:hover { border-color: var(--cyan); color: #fff; transform: translateY(-2px); box-shadow: 0 0 12px #27d9ff33; }
 
-    .lang-btn {
-      background: transparent;
-      border: 1px solid var(--border-glow);
-      color: var(--light-purple);
-      padding: 6px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.85rem;
-      transition: all 0.3s ease;
-    }
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.primary{
+  background:linear-gradient(100deg,var(--cyan),var(--blue));
+  color:#031019;
+  border:0;
+  font-weight:800;
+  box-shadow:0 0 28px #27d9ff55;
+  padding: 12px 26px;
+  border-radius: 999px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+.primary:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 0 40px #27d9ff88;
+}
 
-    .lang-btn:hover {
-      background: rgba(139, 92, 246, 0.2);
-      border-color: var(--neon-cyan);
-      color: var(--neon-cyan);
-    }
+.pipeline{
+  position:relative;
+  background:linear-gradient(145deg,#102b40,#08121b);
+  border:1px solid #2d6788;
+  border-radius:28px;
+  padding:28px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition: transform 0.4s ease, border-color 0.4s ease;
+}
+.pipeline:hover { transform: translateY(-6px); border-color: var(--cyan); }
 
-    /* ==========================================
-       3. Hero Section
-       ========================================== */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 120px 8% 60px;
-      text-align: center;
-    }
+.pipeline:before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:conic-gradient(from 90deg,transparent,var(--cyan),transparent 32%);
+  animation:spin 8s linear infinite;
+  opacity:.12;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    .hero-content {
-      max-width: 850px;
-    }
+.code{
+  position:relative;
+  background:#061018;
+  border:1px solid #21455e;
+  border-radius:18px;
+  padding:22px;
+  color:#b5d8ed;
+  font:14px/1.9 ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+.code b{color:var(--cyan)}
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(139, 92, 246, 0.1);
-      border: 1px solid var(--border-glow);
-      color: var(--light-purple);
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 24px;
-    }
+.flow{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
+.node{
+  padding:14px 8px;
+  text-align:center;
+  background:#10283a;
+  border:1px solid #2c6b8d;
+  border-radius:13px;
+  font-size:12px;
+  color:var(--silver);
+  animation:pulse 2.8s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+.node:nth-child(2){animation-delay:.35s}
+.node:nth-child(3){animation-delay:.7s}
+.node:nth-child(4){animation-delay:1.05s}
+@keyframes pulse{50%{border-color:var(--cyan);box-shadow:0 0 18px #27d9ff44;transform:translateY(-4px)}}
 
-    .hero h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 3.8rem;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #ffffff 30%, var(--light-purple) 70%, var(--neon-cyan) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+section{padding:82px 0;border-top:1px solid #153247}
+.sectionhead{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:30px}
+.sectionno{color:var(--cyan);font:700 13px ui-monospace}
+.sectionhead h2{font-size:clamp(30px,5vw,52px);line-height:1.05;margin:8px 0}
+.sectionhead p{color:var(--muted);max-width:520px}
 
-    .hero p {
-      font-size: 1.2rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 36px;
-    }
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{
+  background:linear-gradient(150deg,#102333,#0a151f);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:26px;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow:0 10px 34px #0003;
+}
+.card:hover{
+  transform:translateY(-8px) scale(1.02);
+  border-color:var(--cyan);
+  box-shadow:0 0 35px #27d9ff22;
+}
 
-    .cta-group {
-      display: flex;
-      gap: 18px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+.card h3{margin:0 0 10px;font-size:21px}
+.card p,.card li{color:var(--muted);font-size:15px;line-height:1.6}
+.tag{display:inline-block;color:var(--cyan);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-weight:600}
 
-    .btn {
-      padding: 14px 32px;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 1rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      cursor: pointer;
-    }
+.case{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.case .card{height:100%}
 
-    .btn-primary {
-      background: linear-gradient(135deg, #7c3aed, #4c1d95);
-      color: #fff;
-      border: 1px solid rgba(167, 139, 250, 0.4);
-      box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
-    }
+.stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.stack span{
+  background:#0a1723;
+  border:1px solid #25516c;
+  color:var(--silver);
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:12px;
+  transition: all 0.2s ease;
+}
+.stack span:hover { border-color: var(--cyan); color: #fff; }
 
-    .btn-primary:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 0 35px rgba(124, 58, 237, 0.7);
-      border-color: var(--neon-cyan);
-    }
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.contact a{color:var(--cyan)}
 
-    .btn-secondary {
-      background: transparent;
-      color: var(--text-main);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
+footer{padding:35px 0 60px;color:var(--muted);display:flex;justify-content:space-between;gap:20px;border-top:1px solid #153247;margin-top:40px}
 
-    .btn-secondary:hover {
-      transform: translateY(-4px);
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--neon-cyan);
-      color: var(--neon-cyan);
-    }
+body.rtl { direction: rtl; }
+body.rtl .nav { flex-direction: row; }
+body.rtl .sectionhead { text-align: right; }
 
-    /* ==========================================
-       4. Cards & Section Layouts
-       ========================================== */
-    section {
-      padding: 90px 8%;
-    }
-
-    .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2.2rem;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-
-    .section-subtitle {
-      text-align: center;
-      color: var(--text-muted);
-      margin-bottom: 48px;
-      font-size: 1rem;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-glow);
-      border-radius: 16px;
-      padding: 32px;
-      backdrop-filter: blur(12px);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card:hover {
-      transform: translateY(-8px);
-      border-color: var(--neon-cyan);
-      box-shadow: 0 10px 30px -10px rgba(0, 229, 255, 0.25);
-    }
-
-    .card-icon {
-      width: 48px;
-      height: 48px;
-      background: rgba(139, 92, 246, 0.15);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--neon-cyan);
-      margin-bottom: 20px;
-    }
-
-    .card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 12px;
-    }
-
-    .card p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 18px;
-    }
-
-    .tag {
-      background: rgba(139, 92, 246, 0.12);
-      border: 1px solid var(--border-glow);
-      color: var(--light-purple);
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-
-    /* Contact Section */
-    .contact-card {
-      text-align: center;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .contact-links {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-top: 28px;
-      flex-wrap: wrap;
-    }
-
-    .social-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-
-    .social-link:hover {
-      color: var(--neon-cyan);
-      transform: translateY(-2px);
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    /* RTL Support */
-    body.rtl {
-      direction: rtl;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body.rtl .nav-links {
-      flex-direction: row-reverse;
-    }
-  </style>
+@media(max-width:850px){
+  .links{display:none}
+  .hero,.case,.contact{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr}
+  .hero{padding-top:60px}
+  .flow{grid-template-columns:repeat(2,1fr)}
+  .sectionhead{display:block}
+}
+</style>
 </head>
 <body>
 
-  <!-- Background Interactive Canvas -->
-  <canvas id="canvas-bg"></canvas>
+<canvas id="canvas-bg"></canvas>
 
-  <!-- Navigation Bar -->
-  <nav class="navbar">
-    <a href="#" class="logo"><i data-lucide="database"></i> JA<span>.Data</span></a>
-    <ul class="nav-links">
-      <li><a href="#about" id="nav-about">About</a></li>
-      <li><a href="#skills" id="nav-skills">Skills</a></li>
-      <li><a href="#projects" id="nav-projects">Projects</a></li>
-      <li><a href="#contact" id="nav-contact">Contact</a></li>
-    </ul>
-    <div class="nav-actions">
-      <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">AR</button>
+<div class="wrap">
+<nav class="nav">
+  <a class="brand" href="#home"><span class="brandmark">JA</span> JANNAT ADEL</a>
+  <div class="links">
+    <a href="#about" id="nav-about">About</a>
+    <a href="#skills" id="nav-skills">Skills</a>
+    <a href="#projects" id="nav-projects">Projects</a>
+    <a href="#education" id="nav-edu">Education</a>
+    <a href="#services" id="nav-serv">Services</a>
+    <a href="#contact" id="nav-cont">Contact</a>
+  </div>
+  <button id="lang">AR</button>
+  <button id="theme">◐</button>
+</nav>
+
+<main id="home" class="hero">
+  <div>
+    <div class="eyebrow" id="hero-hello">Hello, I’m</div>
+    <h1>Jannat <span>Adel</span></h1>
+    <h2 id="hero-role">Data Engineer</h2>
+    <p class="lead" id="hero-lead">I help startups and teams build reliable SQL-driven data pipelines and clean datasets to turn raw information into a solid foundation for decision-making.</p>
+    <div class="pillrow">
+      <span class="pill">Python</span>
+      <span class="pill">SQL & Postgres</span>
+      <span class="pill">Data Pipelines</span>
+      <span class="pill">ETL / Data Prep</span>
+      <span class="pill">DEPI Candidate</span>
     </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="hero" id="about">
-    <div class="hero-content">
-      <div class="badge"><i data-lucide="sparkles" size="16"></i> Data Engineer & Pipeline Specialist</div>
-      <h1 id="hero-title">Building Scalable Data Foundations</h1>
-      <p id="hero-desc">
-        Hi, I'm <strong>Jannat Adel</strong> 👋 — Data Engineer with a CS & Statistics background. I specialize in designing robust SQL pipelines and transforming raw unstructured data into high-value business assets.
-      </p>
-      <div class="cta-group">
-        <a href="#projects" class="btn btn-primary" id="btn-projects"><i data-lucide="folder-git-2"></i> View Projects</a>
-        <a href="#contact" class="btn btn-secondary" id="btn-contact"><i data-lucide="mail"></i> Contact Me</a>
-      </div>
+    <div class="cta">
+      <a class="primary" href="#projects" id="btn-work">View my work</a>
+      <a class="pill" href="mailto:jannat.adel@gmail.com" id="btn-reach">Reach out via email</a>
     </div>
-  </section>
-
-  <!-- Skills Section -->
-  <section id="skills">
-    <h2 class="section-title" id="skills-title">Working Toolkit</h2>
-    <p class="section-subtitle" id="skills-sub">Core technologies powering my data pipelines</p>
-
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-icon"><i data-lucide="workflow"></i></div>
-        <h3 id="skill1-title">Workflow & Control</h3>
-        <p id="skill1-desc">Managing version control and environment orchestration for smooth deployment.</p>
-        <div class="tags">
-          <span class="tag">Git</span>
-          <span class="tag">GitHub</span>
-          <span class="tag">Linux/Bash</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-icon"><i data-lucide="cpu"></i></div>
-        <h3 id="skill2-title">Processing & ETL</h3>
-        <p id="skill2-desc">Constructing clean, automated data pipelines and data processing scripts.</p>
-        <div class="tags">
-          <span class="tag">Python</span>
-          <span class="tag">Pandas</span>
-          <span class="tag">ETL Pipelines</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-icon"><i data-lucide="database"></i></div>
-        <h3 id="skill3-title">Database Management</h3>
-        <p id="skill3-desc">Designing optimized relational databases, complex queries, and data architecture.</p>
-        <div class="tags">
-          <span class="tag">SQL</span>
-          <span class="tag">PostgreSQL</span>
-          <span class="tag">MySQL</span>
-        </div>
-      </div>
+  </div>
+  <div class="pipeline">
+    <div class="code">
+      <span>01</span> <b>data_engineer.py</b><br>
+      source = <b>"raw_unstructured_data"</b><br>
+      clean = extract_and_transform(source)<br>
+      load(clean, <b>"trusted_analytics_db"</b>)<br><br>
+      <span style="color:#8bb7cd"># Turning messy inputs into reliable, actionable business assets</span>
     </div>
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects">
-    <h2 class="section-title" id="projects-title">Featured Case Studies</h2>
-    <p class="section-subtitle" id="projects-sub">Hands-on engineering solutions and analytical challenges</p>
-
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-icon"><i data-lucide="music"></i></div>
-        <h3 id="proj1-title">AI Sound System Architecture</h3>
-        <p id="proj1-desc">End-to-end audio processing pipeline designed for seamless audio feature extraction and real-time processing.</p>
-        <div class="tags">
-          <span class="tag">Python</span>
-          <span class="tag">Audio Pipelines</span>
-          <span class="tag">AI Processing</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-icon"><i data-lucide="terminal"></i></div>
-        <h3 id="proj2-title">LeetCode SQL Solutions</h3>
-        <p id="proj2-desc">A curated repository of advanced query optimizations, window functions, and complex joins.</p>
-        <div class="tags">
-          <span class="tag">SQL</span>
-          <span class="tag">Database Optimization</span>
-          <span class="tag">LeetCode</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-icon"><i data-lucide="award"></i></div>
-        <h3 id="proj3-title">DEPI Certification & Track</h3>
-        <p id="proj3-desc">Nominated for the 5th round of Digital Egypt Pioneers Initiative in Data Engineering and AI modules.</p>
-        <div class="tags">
-          <span class="tag">Data Engineering</span>
-          <span class="tag">DEPI</span>
-          <span class="tag">AI Training</span>
-        </div>
-      </div>
+    <div class="flow">
+      <div class="node">Python</div>
+      <div class="node">SQL</div>
+      <div class="node">Database</div>
+      <div class="node">Insights</div>
     </div>
-  </section>
+  </div>
+</main>
 
-  <!-- Contact Section -->
-  <section id="contact">
-    <div class="card contact-card">
-      <h2 class="section-title" id="contact-title">Let's Connect & Build</h2>
-      <p id="contact-desc">Open for Data Engineering opportunities, pipeline architecture projects, and technical collaborations.</p>
-      
-      <div style="margin-top: 24px;">
-        <a href="mailto:jannat.adel@gmail.com" class="btn btn-primary"><i data-lucide="send"></i> Reach Out via Email</a>
-      </div>
-
-      <div class="contact-links">
-        <a href="mailto:jannat.adel@gmail.com" class="social-link"><i data-lucide="mail"></i> Email</a>
-        <a href="https://github.com" target="_blank" class="social-link"><i data-lucide="github"></i> GitHub</a>
-        <a href="https://linkedin.com" target="_blank" class="social-link"><i data-lucide="linkedin"></i> LinkedIn</a>
-      </div>
+<section id="about">
+  <div class="sectionhead">
+    <div>
+      <div class="sectionno" id="about-num">01 / ABOUT ME</div>
+      <h2 id="about-title">Building structure before scale.</h2>
     </div>
-  </section>
+    <p id="about-desc">I’m a Computer Science and Statistics student developing my expertise in Data Engineering through the Digital Egypt Pioneers Initiative (DEPI). My work focuses on SQL query optimization, Python pipeline automation, relational database architecture, and constructing scalable data models.</p>
+  </div>
+</section>
 
-  <footer>
-    <p>© 2026 Jannat Adel Ibrahim Ali. All Rights Reserved.</p>
-  </footer>
+<section id="skills">
+  <div class="sectionhead">
+    <div>
+      <div class="sectionno" id="skills-num">02 / WORKING TOOLKIT</div>
+      <h2 id="skills-title">Tools with a purpose.</h2>
+    </div>
+    <p id="skills-desc">No inflated percentages. Just the practical engineering stack I use to design, process, and store data efficiently.</p>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <span class="tag">01 · Database Architecture</span>
+      <h3 id="sk1-title">SQL & Data Stores</h3>
+      <p id="sk1-desc">Complex query writing, schema design, index optimization, PostgreSQL, MySQL, and relational data architecture.</p>
+      <div class="stack"><span>PostgreSQL</span><span>MySQL</span><span>Complex Joins</span><span>Indexes</span></div>
+    </article>
+    <article class="card">
+      <span class="tag">02 · Programming & ETL</span>
+      <h3 id="sk2-title">Python & Pandas</h3>
+      <p id="sk2-desc">Automated data preparation, cleaning logic, feature preprocessing, and building reliable data pipelines.</p>
+      <div class="stack"><span>Python</span><span>Pandas</span><span>NumPy</span><span>ETL Logic</span></div>
+    </article>
+    <article class="card">
+      <span class="tag">03 · Workflow & Operations</span>
+      <h3 id="sk3-title">Git & Linux Environment</h3>
+      <p id="sk3-desc">Version control, command-line automation, Docker container basics, and documenting clean project repositories.</p>
+      <div class="stack"><span>Git</span><span>GitHub</span><span>Linux/Bash</span><span>Docker</span></div>
+    </article>
+  </div>
+</section>
 
-  <!-- Interactive JavaScript & Language Switcher -->
-  <script>
-    // Initialize Icons
-    lucide.createIcons();
+<section id="projects">
+  <div class="sectionhead">
+    <div>
+      <div class="sectionno" id="proj-num">03 / FEATURED CASE STUDIES</div>
+      <h2 id="proj-title">Featured Work & Projects.</h2>
+    </div>
+    <p id="proj-desc">Academic case studies, pipeline practice repositories, and query optimization challenges.</p>
+  </div>
+  <div class="case">
+    <article class="card">
+      <span class="tag">Academic Case Study · In Progress</span>
+      <h3>AI Sound System Pipeline</h3>
+      <p><b>Role:</b> Dataset & Pipeline Lead</p>
+      <p><b>Problem:</b> Machine learning audio models require structured, high-quality audio features extracted from unstructured raw sound clips.</p>
+      <p><b>Action:</b> Designed and managed dataset extraction, automated audio cleaning logic, and feature engineering for model integration.</p>
+      <p><b>Status:</b> Work in progress; ongoing performance testing and pipeline integration.</p>
+      <div class="stack"><span>Audio Dataset</span><span>Data Cleaning</span><span>Preprocessing</span><span>Python</span></div>
+    </article>
+    <article class="card">
+      <span class="tag">Practice Repository</span>
+      <h3>LeetCode SQL Optimization Hub</h3>
+      <p><b>Focus:</b> Advanced query problem solving, CTEs, window functions, and aggregation logic.</p>
+      <p><b>Action:</b> Developed and documented solutions for high-complexity SQL challenges focusing on performance and readability.</p>
+      <p><b>Status:</b> Active ongoing repository documenting query patterns and logic.</p>
+      <div class="stack"><span>SQL</span><span>CTEs</span><span>Window Functions</span><span>Optimization</span></div>
+    </article>
+  </div>
+</section>
 
-    // 1. Interactive Particle Canvas Background
-    const canvas = document.getElementById('canvas-bg');
-    const ctx = canvas.getContext('2d');
+<section id="education">
+  <div class="sectionhead">
+    <div>
+      <div class="sectionno" id="edu-num">04 / EDUCATION & CERTIFICATIONS</div>
+      <h2 id="edu-title">Academic & Technical Training.</h2>
+    </div>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <span class="tag">Academic Degree</span>
+      <h3>B.Sc. Computer Science & Statistics</h3>
+      <p>Faculty of Science — Helwan University. Deep theoretical and practical foundation in algorithms, statistical modeling, and data structures.</p>
+    </article>
+    <article class="card">
+      <span class="tag">Professional Training</span>
+      <h3>DEPI Data Engineering Track</h3>
+      <p>Nominated for the 5th round of Digital Egypt Pioneers Initiative. Specialized training in data pipelines, SQL architecture, and cloud data engineering.</p>
+    </article>
+    <article class="card">
+      <span class="tag">Certifications</span>
+      <h3>Verified Technical Learning</h3>
+      <p>Microsoft AI Literacy • Cisco Python Essentials • Coursera Digital Marketing & E-commerce • Data Science Foundations.</p>
+    </article>
+  </div>
+</section>
 
-    let particles = [];
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+<section id="services">
+  <div class="sectionhead">
+    <div>
+      <div class="sectionno" id="serv-num">05 / SERVICES</div>
+      <h2 id="serv-title">Practical Data Solutions.</h2>
+    </div>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <span class="tag">01 · Automated Ingestion</span>
+      <h3>Data Pipeline Development</h3>
+      <p>Designing and constructing automated Python and SQL workflows to ingest, transform, and deliver trusted data.</p>
+    </article>
+    <article class="card">
+      <span class="tag">02 · Query Tuning</span>
+      <h3>SQL Architecture & Optimization</h3>
+      <p>Structuring relational schemas, writing complex joins, and tuning query execution for fast analytics access.</p>
+    </article>
+    <article class="card">
+      <span class="tag">03 · Data Quality</span>
+      <h3>Dataset Cleaning & Preprocessing</h3>
+      <p>Handling missing values, outlier detection, and transforming raw unstructured data into clean, structured datasets.</p>
+    </article>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="sectionhead">
+    <div>
+      <div class="sectionno" id="cont-num">06 / CONTACT</div>
+      <h2 id="cont-title">Let’s connect & build scalable data solutions.</h2>
+    </div>
+    <p id="cont-desc">I am open for Data Engineering roles, pipeline architecture projects, and technical collaborations.</p>
+  </div>
+  <div class="contact">
+    <div class="card">
+      <span class="tag">Direct Email</span>
+      <h3><a href="mailto:jannat.adel@gmail.com">jannat.adel@gmail.com</a></h3>
+      <p>Feel free to reach out directly for project discussions or full-time opportunities.</p>
+      <br>
+      <a class="primary" href="mailto:jannat.adel@gmail.com">Reach Out via Email</a>
+    </div>
+    <div class="card">
+      <span class="tag">Professional Network</span>
+      <h3><a href="https://www.linkedin.com/in/jannat-adel-034a79377" target="_blank">LinkedIn · Jannat Adel</a></h3>
+      <h3><a href="https://github.com/jannat-adel" target="_blank">GitHub · Jannat Adel</a></h3>
+      <p style="margin-top: 12px;">📍 Cairo, Egypt · Available for Remote & On-site Roles</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>© 2026 Jannat Adel Ibrahim Ali</span>
+  <span>Data Engineer · CS & Statistics · SQL & Pipelines</span>
+</footer>
+</div>
+
+<script>
+  const canvas = document.getElementById('canvas-bg');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.radius = Math.random() * 1.5 + 1;
     }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.6;
-        this.vy = (Math.random() - 0.5) * 0.6;
-        this.radius = Math.random() * 1.8 + 1;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(139, 92, 246, 0.4)';
-        ctx.fill();
-      }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
     }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(39, 217, 255, 0.35)';
+      ctx.fill();
+    }
+  }
 
-    for (let i = 0; i < 50; i++) particles.push(new Particle());
+  for (let i = 0; i < 45; i++) particles.push(new Particle());
 
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(0, 229, 255, ${1 - dist / 120})`;
-            ctx.lineWidth = 0.4;
-            ctx.stroke();
-          }
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 110) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(39, 217, 255, ${0.8 - dist / 110})`;
+          ctx.lineWidth = 0.4;
+          ctx.stroke();
         }
       }
-      requestAnimationFrame(animate);
     }
-    animate();
+    requestAnimationFrame(animate);
+  }
+  animate();
 
-    // 2. Language Toggle Logic (EN / AR)
-    let currentLang = 'EN';
-    const translations = {
-      EN: {
-        navAbout: "About", navSkills: "Skills", navProjects: "Projects", navContact: "Contact",
-        heroTitle: "Building Scalable Data Foundations",
-        heroDesc: "Hi, I'm <strong>Jannat Adel</strong> 👋 — Data Engineer with a CS & Statistics background. I specialize in designing robust SQL pipelines and transforming raw unstructured data into high-value business assets.",
-        btnProjects: "View Projects", btnContact: "Contact Me",
-        skillsTitle: "Working Toolkit", skillsSub: "Core technologies powering my data pipelines",
-        projectsTitle: "Featured Case Studies", projectsSub: "Hands-on engineering solutions and analytical challenges",
-        contactTitle: "Let's Connect & Build", contactDesc: "Open for Data Engineering opportunities, pipeline architecture projects, and technical collaborations."
-      },
-      AR: {
-        navAbout: "عنّي", navSkills: "المهارات", navProjects: "المشاريع", navContact: "التواصل",
-        heroTitle: "بناء بنية تحتية قوية ومستدامة للبيانات",
-        heroDesc: "أهلاً، أنا <strong>جنات عادل</strong> 👋 — مهندسة بيانات بخلفية في علوم الحاسب والإحصاء. متخصصة في تصميم خطوط بيانات SQL وتحويل البيانات الخام إلى أصول عالية القيمة.",
-        btnProjects: "استعرض المشاريع", btnContact: "تواصل معي",
-        skillsTitle: "أدوات العمل والمهارات", skillsSub: "التقنيات الأساسية لبناء معالجة البيانات",
-        projectsTitle: "المشاريع والتطبيقات", projectsSub: "حلول هندسية وتطبيقات عمليّة على البيانات",
-        contactTitle: "لنعمل معاً ونبني المستقبل", contactDesc: "متاحة لفرص هندسة البيانات، ومشاريع خطوط المعالجة والتواصل التقني."
-      }
-    };
+  const root = document.documentElement;
+  document.getElementById('theme').onclick = () => {
+    const isLight = root.dataset.theme === 'light';
+    root.dataset.theme = isLight ? '' : 'light';
+  };
 
-    function toggleLanguage() {
-      currentLang = currentLang === 'EN' ? 'AR' : 'EN';
-      document.body.classList.toggle('rtl', currentLang === 'AR');
-      document.getElementById('lang-toggle').innerText = currentLang === 'EN' ? 'AR' : 'EN';
-
-      const t = translations[currentLang];
-      document.getElementById('nav-about').innerText = t.navAbout;
-      document.getElementById('nav-skills').innerText = t.navSkills;
-      document.getElementById('nav-projects').innerText = t.navProjects;
-      document.getElementById('nav-contact').innerText = t.navContact;
-      document.getElementById('hero-title').innerText = t.heroTitle;
-      document.getElementById('hero-desc').innerHTML = t.heroDesc;
-      document.getElementById('skills-title').innerText = t.skillsTitle;
-      document.getElementById('skills-sub').innerText = t.skillsSub;
-      document.getElementById('projects-title').innerText = t.projectsTitle;
-      document.getElementById('projects-sub').innerText = t.projectsSub;
-      document.getElementById('contact-title').innerText = t.contactTitle;
-      document.getElementById('contact-desc').innerText = t.contactDesc;
+  let lang = 'EN';
+  const translations = {
+    EN: {
+      navAbout: "About", navSkills: "Skills", navProjects: "Projects", navEdu: "Education", navServ: "Services", navCont: "Contact",
+      hello: "Hello, I’m", role: "Data Engineer",
+      lead: "I help startups and teams build reliable SQL-driven data pipelines and clean datasets to turn raw information into a solid foundation for decision-making.",
+      btnWork: "View my work", btnReach: "Reach out via email",
+      aboutNum: "01 / ABOUT ME", aboutTitle: "Building structure before scale.",
+      aboutDesc: "I’m a Computer Science and Statistics student developing my expertise in Data Engineering through the Digital Egypt Pioneers Initiative (DEPI). My work focuses on SQL query optimization, Python pipeline automation, relational database architecture, and constructing scalable data models.",
+      skillsNum: "02 / WORKING TOOLKIT", skillsTitle: "Tools with a purpose.", skillsDesc: "No inflated percentages. Just the practical engineering stack I use to design, process, and store data efficiently.",
+      projNum: "03 / FEATURED CASE STUDIES", projTitle: "Featured Work & Projects.", projDesc: "Academic case studies, pipeline practice repositories, and query optimization challenges.",
+      eduNum: "04 / EDUCATION & CERTIFICATIONS", eduTitle: "Academic & Technical Training.",
+      servNum: "05 / SERVICES", servTitle: "Practical Data Solutions.",
+      contNum: "06 / CONTACT", contTitle: "Let’s connect & build scalable data solutions.", contDesc: "I am open for Data Engineering roles, pipeline architecture projects, and technical collaborations."
+    },
+    AR: {
+      navAbout: "عنّي", navSkills: "المهارات", navProjects: "المشاريع", navEdu: "التعليم", navServ: "الخدمات", navCont: "التواصل",
+      hello: "أهلاً، أنا", role: "مهندسة بيانات",
+      lead: "أساعد الشركات والفرق في بناء أنابيب بيانات (Data Pipelines) قوية وموثوقة باستخدام SQL وPython لتحويل البيانات الخام إلى بنية دقيقة لاتخاذ القرارات.",
+      btnWork: "استعرض أعمالي", btnReach: "تواصل عبر البريد",
+      aboutNum: "01 / نبذة عني", aboutTitle: "بناء البنية التحتية قبل التوسع.",
+      aboutDesc: "طالبة علوم حاسب وإحصاء أطور شغفي في هندسة البيانات من خلال مبادرة رواد مصر الرقمية (DEPI). أركز على تحسين استعلامات SQL، وأتمتة خطوط البيانات بـ Python، وهندسة قواعد البيانات.",
+      skillsNum: "02 / أدوات العمل", skillsTitle: "أدوات مخصصة للهدف.", skillsDesc: "بدون أرقام وهمية، هذه الأدوات والتقنيات التي أستخدمها لبناء ومعالجة البيانات كفاءة.",
+      projNum: "03 / المشاريع التطبيقية", projTitle: "أبرز مشاريعي وتطبيقاتي.", projDesc: "دراسات حالة أكاديمية، ومستودعات برمجية لتحسين استعلامات SQL.",
+      eduNum: "04 / التعليم والشهادات", eduTitle: "المؤهلات الأكاديمية والتدريب التقني.",
+      servNum: "05 / الخدمات", servTitle: "حلول وخدمات هندسة البيانات.",
+      contNum: "06 / التواصل", contTitle: "لنعمل معاً ونبني بنية بيانات مستدامة.", contDesc: "متاحة لفرص العمل في هندسة البيانات والمشاريع التقنية والتطويرية."
     }
-  </script>
+  };
+
+  document.getElementById('lang').onclick = () => {
+    lang = lang === 'EN' ? 'AR' : 'EN';
+    document.getElementById('lang').textContent = lang === 'EN' ? 'AR' : 'EN';
+    document.body.classList.toggle('rtl', lang === 'AR');
+
+    const t = translations[lang];
+    document.getElementById('nav-about').textContent = t.navAbout;
+    document.getElementById('nav-skills').textContent = t.navSkills;
+    document.getElementById('nav-projects').textContent = t.navProjects;
+    document.getElementById('nav-edu').textContent = t.navEdu;
+    document.getElementById('nav-serv').textContent = t.navServ;
+    document.getElementById('nav-cont').textContent = t.navCont;
+    document.getElementById('hero-hello').textContent = t.hello;
+    document.getElementById('hero-role').textContent = t.role;
+    document.getElementById('hero-lead').textContent = t.lead;
+    document.getElementById('btn-work').textContent = t.btnWork;
+    document.getElementById('btn-reach').textContent = t.btnReach;
+    document.getElementById('about-num').textContent = t.aboutNum;
+    document.getElementById('about-title').textContent = t.aboutTitle;
+    document.getElementById('about-desc').textContent = t.aboutDesc;
+    document.getElementById('skills-num').textContent = t.skillsNum;
+    document.getElementById('skills-title').textContent = t.skillsTitle;
+    document.getElementById('skills-desc').textContent = t.skillsDesc;
+    document.getElementById('proj-num').textContent = t.projNum;
+    document.getElementById('proj-title').textContent = t.projTitle;
+    document.getElementById('proj-desc').textContent = t.projDesc;
+    document.getElementById('edu-num').textContent = t.eduNum;
+    document.getElementById('edu-title').textContent = t.eduTitle;
+    document.getElementById('serv-num').textContent = t.servNum;
+    document.getElementById('serv-title').textContent = t.servTitle;
+    document.getElementById('cont-num').textContent = t.contNum;
+    document.getElementById('cont-title').textContent = t.contTitle;
+    document.getElementById('cont-desc').textContent = t.contDesc;
+  };
+</script>
 </body>
 </html>
